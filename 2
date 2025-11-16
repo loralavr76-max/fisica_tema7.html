@@ -954,7 +954,13 @@
   </main>
 </div>
 
+<script><script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
+const supa = supabase.createClient(
+  "https://peynomitdenvbdtlvnuz.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBleW5vbWl0ZGVudmJkdGx2bnV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMTg3MDksImV4cCI6MjA3ODg5NDcwOX0.jNrNDqlxfiG8XzIN9ChQnvhKIIbh0QGUcNMHWHO_uUk"
+);
+
   // ====== ДАННЫЕ ТЕМЫ ======
 
   const topics = [
@@ -1253,11 +1259,32 @@
       btn.addEventListener('click', () => {
         const already = progressState.done.includes(currentTestIndex);
 
-        if (idx === t.correct) {
+        if (idx === t.correct) {if (idx === t.correct) {
+   ...
+} else {
+   ...
+}// --- LOG TO SUPABASE ---
+await supa.from("study_logs").insert({
+   subject: "fisica",
+   topic: "tema7",
+   question_id: currentTestIndex,
+   correct: false,
+   timestamp: new Date().toISOString()
+});
+
+
           btn.classList.add('correct');
           testFeedback.textContent = '✅ Верно! ' + t.explain;
           if (!already) {
-            progressState.done.push(currentTestIndex);
+            progressState.done.push(currentTestIndex);// --- LOG TO SUPABASE ---
+await supa.from("study_logs").insert({
+   subject: "fisica",
+   topic: "tema7",
+   question_id: currentTestIndex,
+   correct: true,
+   timestamp: new Date().toISOString()
+});
+
             saveProgress();
             updateProgressUI();
           }
@@ -1316,7 +1343,16 @@
   setInterval(() => {
     progressState.totalSeconds += 10;
     progressState.todaySeconds += 10;
-    saveProgress();
+    saveProgress();setInterval(async () => {
+  await supa.from("study_logs").insert({
+    subject: "fisica",
+    topic: "tema7",
+    action: "time",
+    seconds: 10,
+    timestamp: new Date().toISOString()
+  });
+}, 10000);
+
     updateTimeUI();
   }, 10000);
 
