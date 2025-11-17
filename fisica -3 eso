@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Física 3º ESO · Tema 7 · Las fuerzas y el movimiento</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-main: #05081a;
+      --bg-card: #101634;
+      --bg-card-soft: #141b3c;
+      --accent: #3aa9ff;
+      --accent-soft: rgba(58,169,255,0.18);
+      --accent-strong: #57d6ff;
+      --text-main: #f3f6ff;
+      --text-soft: #c0c6e6;
+      --danger: #ff5c7a;
+      --success: #38e38b;
+      --chip-bg: rgba(255,255,255,0.06);
+      --border-subtle: rgba(255,255,255,0.08);
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, #233d80 0, #05081a 55%, #02030a 100%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 12px;
+      overflow-x: hidden;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1280px;
+      background: radial-gradient(circle at top, #17234a 0, #060816 60%);
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow:
+        0 30px 80px rgba(0,0,0,0.7),
+        0 0 0 1px rgba(255,255,255,0.03) inset;
+      padding: 20px 22px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(90,200,255,0.14) 0, transparent 50%),
+        radial-gradient(circle at bottom left, rgba(80,120,255,0.18) 0, transparent 55%);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .title-block h1 {
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .title-pill {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-strong);
+      background: rgba(0,0,0,0.3);
+    }
+
+    .subtitle {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .mode-switch {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .mode-badge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent-strong);
+    }
+
+    .mode-tabs {
+      display: inline-flex;
+      background: rgba(2,4,20,0.9);
+      border-radius: 999px;
+      padding: 3px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .mode-tab {
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      color: var(--text-soft);
+      border: none;
+      background: transparent;
+      white-space: nowrap;
+    }
+
+    .mode-tab.active {
+      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+      color: #02030a;
+      font-weight: 600;
+      box-shadow: 0 0 18px rgba(87,214,255,0.6);
+    }
+
+    .search-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 4px;
+    }
+
+    .search-wrapper {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-wrapper input {
+      width: 100%;
+      padding: 8px 12px 8px 28px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(3,6,24,0.92);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+    }
+
+    .search-wrapper input::placeholder {
+      color: rgba(200,205,240,0.6);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .toggle-translate {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 7px 11px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(8,10,35,0.9);
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .toggle-dot {
+      width: 18px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      position: relative;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .toggle-dot::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.8);
+      transition: transform 0.18s ease;
+    }
+
+    .toggle-translate.on .toggle-dot::after {
+      transform: translateX(8px);
+      background: var(--accent-strong);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.5fr);
+      gap: 16px;
+      margin-top: 6px;
+      height: 540px;
+    }
+
+    .content-area {
+      background: rgba(5,9,30,0.9);
+      border-radius: 22px;
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(255,255,255,0.09);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .right-panel {
+      background: rgba(5,9,30,0.95);
+      border-radius: 22px;
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(255,255,255,0.09);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    .cards-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .cards-scroll::-webkit-scrollbar,
+    .right-panel::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .cards-scroll::-webkit-scrollbar-thumb,
+    .right-panel::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.18);
+      border-radius: 999px;
+    }
+
+    .theory-card {
+      background: radial-gradient(circle at top left, rgba(90,170,255,0.22) 0, transparent 55%),
+                  var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 10px 11px 9px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.6);
+    }
+
+    .theory-card:nth-child(odd) {
+      background:
+        radial-gradient(circle at top right, rgba(80,220,255,0.25) 0, transparent 55%),
+        var(--bg-card-soft);
+    }
+
+    .theory-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+      gap: 8px;
+    }
+
+    .theory-title {
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-strong);
+      box-shadow: 0 0 10px rgba(87,214,255,0.9);
+    }
+
+    .theory-ref {
+      font-size: 11px;
+      color: rgba(210,220,255,0.8);
+      opacity: 0.9;
+    }
+
+    .theory-text {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.38;
+    }
+
+    .translation {
+      margin-top: 5px;
+      padding-top: 5px;
+      border-top: 1px dashed rgba(255,255,255,0.18);
+      font-size: 13px;
+      color: #e9f0ff;
+      line-height: 1.36;
+    }
+
+    .chip-row {
+      margin-top: 7px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--chip-bg);
+      border: 1px solid rgba(255,255,255,0.16);
+      cursor: pointer;
+      color: var(--text-soft);
+      transition: background 0.15s ease, transform 0.12s ease, border-color 0.15s;
+    }
+
+    .chip:hover {
+      background: rgba(80,180,255,0.25);
+      border-color: rgba(130,210,255,0.9);
+      transform: translateY(-1px);
+    }
+
+    .chip.active {
+      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+      color: #02030a;
+      border-color: transparent;
+      font-weight: 600;
+    }
+
+    .panel-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 10px 11px 9px;
+      border: 1px solid rgba(255,255,255,0.11);
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .panel-title .icon {
+      font-size: 12px;
+    }
+
+    .mini-text {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-bottom: 7px;
+    }
+
+    .panel-divider {
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(255,255,255,0.45),
+        transparent);
+      opacity: 0.35;
+      margin: 5px 0 7px;
+    }
+
+    .tests-main {
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .test-question {
+      font-weight: 600;
+      color: #f6f1ff;
+    }
+
+    .test-options {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .test-option {
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 13px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,9,30,0.9);
+      cursor: pointer;
+      text-align: left;
+      color: var(--text-main);
+      transition: background 0.15s ease, transform 0.1s ease, border-color 0.15s;
+    }
+
+    .test-option:hover:not(.correct):not(.wrong) {
+      background: rgba(80,150,255,0.32);
+      transform: translateY(-1px);
+    }
+
+    .test-option.correct {
+      background: rgba(56,227,139,0.18);
+      border-color: var(--success);
+    }
+
+    .test-option.wrong {
+      background: rgba(255,92,122,0.18);
+      border-color: var(--danger);
+    }
+
+    .test-feedback {
+      font-size: 12px;
+      min-height: 16px;
+    }
+
+    .test-feedback.ok {
+      color: var(--success);
+    }
+
+    .test-feedback.bad {
+      color: var(--danger);
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 3px;
+    }
+
+    .progress-bar-wrap {
+      flex: 1;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+      box-shadow: 0 0 12px rgba(87,214,255,0.9);
+      transition: width 0.25s ease;
+    }
+
+    .progress-label {
+      width: 90px;
+      text-align: right;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .session-info {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    .session-info strong {
+      color: var(--accent-strong);
+    }
+
+    .vocab-main {
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .vocab-word {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .small-pill {
+      display: inline-block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(210,220,255,0.85);
+      margin-bottom: 3px;
+    }
+
+    .vocab-answer {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(3,6,24,0.92);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      margin-top: 3px;
+    }
+
+    .btn-row {
+      margin-top: 6px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(6,9,30,0.95);
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+      border-color: transparent;
+      color: #02030a;
+      font-weight: 600;
+      box-shadow: 0 0 16px rgba(87,214,255,0.8);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .vocab-feedback {
+      font-size: 12px;
+      min-height: 16px;
+      margin-top: 4px;
+    }
+
+    .vocab-meta {
+      margin-top: 3px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    @media (max-width: 960px) {
+      main {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .app {
+        padding: 14px;
+      }
+      .right-panel, .content-area {
+        height: auto;
+        max-height: 480px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .search-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      main {
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="title-block">
+      <h1>
+        <span class="title-pill">Física · 3º ESO</span>
+        Tema 7: ¿Por qué se mueven los cuerpos?
+      </h1>
+      <div class="subtitle">
+        Newton, fuerza, rozamiento y aceleración — всё в одной теме, с переводом на русский.
+      </div>
+    </div>
+    <div class="mode-switch">
+      <div class="mode-badge">
+        👨‍👩‍👦 Modo families
+        <div class="mode-tabs">
+          <button class="mode-tab active" data-mode="theory">Teoría</button>
+          <button class="mode-tab" data-mode="tests">Tests</button>
+          <button class="mode-tab" data-mode="vocab">Vocabulario</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="search-row">
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input id="searchInput" type="text" placeholder="Buscar en el texto / Поиск по теме…" />
+    </div>
+    <button id="toggleTranslate" class="toggle-translate on">
+      <div class="toggle-dot"></div>
+      <span>Показать перевод (RU)</span>
+    </button>
+  </div>
+
+  <main>
+    <!-- ЛЕВАЯ КОЛОНКА · ТЕОРИЯ -->
+    <section class="content-area">
+      <div class="cards-scroll" id="cardsContainer">
+        <!-- Карточки теории рендерятся скриптом -->
+      </div>
+    </section>
+
+    <!-- ПРАВАЯ КОЛОНКА · ТЕСТЫ + СЛОВА + ВРЕМЯ -->
+    <section class="right-panel">
+      <!-- Блок тестов -->
+      <div class="panel-card" id="testsPanel">
+        <div class="panel-title">
+          <span class="icon">🧪</span> Tests
+        </div>
+        <div class="mini-text">
+          Проверь понимание темы. Вопросы меняются автоматически. Ответил — сразу видишь объяснение.
+        </div>
+        <div class="tests-main">
+          <div id="testQuestion" class="test-question"></div>
+          <div id="testOptions" class="test-options"></div>
+          <div id="testFeedback" class="test-feedback"></div>
+          <div class="panel-divider"></div>
+          <div class="progress-row">
+            <div class="progress-bar-wrap">
+              <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <div id="progressCircle" class="progress-label"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Блок слов -->
+      <div class="panel-card" id="vocabPanel">
+        <div class="panel-title">
+          <span class="icon">🔠</span> Тренажёр слов
+        </div>
+        <div class="mini-text">
+          Испанский → русский. Вводи перевод и жми «Проверить». Можно также просто нажать «Показать ответ».
+        </div>
+        <div class="vocab-main">
+          <div class="small-pill">Слово по теме</div>
+          <div id="vocabWord" class="vocab-word">fuerza</div>
+          <input id="vocabAnswer" class="vocab-answer" placeholder="Введите перевод…" />
+          <div class="btn-row">
+            <button id="checkVocab" class="btn btn-primary">Проверить</button>
+            <button id="showVocab" class="btn btn-secondary">Показать ответ</button>
+            <button id="nextVocab" class="btn btn-secondary">Новое слово</button>
+          </div>
+          <div id="vocabFeedback" class="vocab-feedback"></div>
+          <div id="vocabMeta" class="vocab-meta"></div>
+        </div>
+      </div>
+
+      <!-- ВРЕМЯ ЗАНЯТИЯ -->
+      <div class="panel-card">
+        <div class="panel-title">
+          <span class="icon">⏱</span> Время по теме
+        </div>
+        <div class="mini-text">
+          Считает время только на этом устройстве. Для ребёнка — чтобы видеть, сколько реально занимался.
+        </div>
+        <div class="session-info">
+          Сегодня по теме: <strong id="sessionToday">0 мин</strong><br />
+          Всего по теме: <strong id="totalMinutes">0 мин</strong>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  // ===== ДАННЫЕ ТЕМЫ (ТЕОРИЯ) =====
+  const topics = [
+    {
+      id: 'newton1',
+      ref: '5.1 · Primera ley de Newton',
+      title: 'Primera ley de Newton o ley de la inercia',
+      text_ca:
+        'Un cuerpo se mantendrá en su estado de movimiento, ya sea en reposo o a velocidad constante, si no se le obliga a cambiar por la acción de una o varias fuerzas que actúan sobre él.',
+      text_ru:
+        'Тело сохраняет состояние покоя или равномерного прямолинейного движения, пока на него не подействует сила, заставляющая изменить это состояние. Это и есть закон инерции.',
+      keywords: ['ley de la inercia', 'inercia', 'equilibrio', 'MRU']
+    },
+    {
+      id: 'newton2',
+      ref: '5.2 · Segunda ley de Newton',
+      title: 'Segunda ley de Newton o ley del movimiento',
+      text_ca:
+        'Si sobre un cuerpo actúa una fuerza neta, este adquiere una aceleración directamente proporcional a la fuerza que actúa sobre él e inversamente proporcional a la masa: F = m · a.',
+      text_ru:
+        'Если на тело действует равнодействующая сила, оно получает ускорение, прямо пропорциональное этой силе и обратно пропорциональное массе: F = m · a.',
+      keywords: ['F = m · a', 'aceleración', 'fuerza neta', 'masa']
+    },
+    {
+      id: 'newton3',
+      ref: '5.3 · Tercera ley de Newton',
+      title: 'Tercera ley de Newton o ley de acción y reacción',
+      text_ca:
+        'Si un cuerpo ejerce una fuerza sobre otro, este ejerce una fuerza igual, pero en sentido contrario, sobre el primero. Ambas fuerzas forman un par acción-reacción.',
+      text_ru:
+        'Если одно тело действует на другое с некоторой силой, второе тело действует на первое с такой же по модулю силой, но в противоположном направлении. Эти силы называют парой действия и противодействия.',
+      keywords: ['acción y reacción', 'par de fuerzas', 'fuerza normal']
+    },
+    {
+      id: 'peso',
+      ref: '5 · Fuerza de la gravedad',
+      title: 'Peso: la fuerza con la que nos atrae la gravedad',
+      text_ca:
+        'El peso es la fuerza con la que la gravedad atrae a un cuerpo. Se calcula como P = m · g, donde g ≈ 9,8 m/s² en la Tierra.',
+      text_ru:
+        'Вес — это сила, с которой гравитация притягивает тело. Вычисляется по формуле P = m · g, где g ≈ 9,8 м/с² на Земле.',
+      keywords: ['peso', 'gravedad', 'P = m · g']
+    },
+    {
+      id: 'friccion',
+      ref: '6 · La fuerza de rozamiento',
+      title: 'Rozamiento: fuerza que se opone al movimiento',
+      text_ca:
+        'La fuerza de rozamiento se opone al movimiento relativo entre dos superficies en contacto. Su dirección es siempre contraria al movimiento.',
+      text_ru:
+        'Сила трения возникает между соприкасающимися поверхностями и всегда направлена противоположно движению. Она мешает телам скользить или катиться.',
+      keywords: ['rozamiento', 'fricción estática', 'fricción dinámica']
+    },
+    {
+      id: 'coef',
+      ref: '6 · Coeficientes de rozamiento',
+      title: 'Coeficiente de rozamiento μ',
+      text_ca:
+        'El coeficiente de rozamiento (μ) mide cuánta fricción hay entre dos materiales. Depende de la naturaleza de las superficies y no del área de contacto.',
+      text_ru:
+        'Коэффициент трения μ показывает, насколько сильно трутся друг о друга материалы. Он зависит от свойств поверхностей, а не от площади соприкосновения.',
+      keywords: ['μ', 'coeficiente', 'materiales', 'tabla de rozamiento']
+    },
+    {
+      id: 'aceleracion',
+      ref: 'La aceleración de los cuerpos',
+      title: 'Aceleración: cambio de velocidad con el tiempo',
+      text_ca:
+        'La aceleración es la variación de la velocidad de un cuerpo por unidad de tiempo. Cuando un objeto cae en caída libre cerca de la superficie terrestre, su aceleración es aproximadamente constante y vale g.',
+      text_ru:
+        'Ускорение — это изменение скорости тела за единицу времени. При свободном падении возле поверхности Земли ускорение почти постоянно и равно g.',
+      keywords: ['aceleración', 'caída libre', 'g']
+    }
+  ];
+
+  // ===== ТЕСТЫ =====
+  const tests = [
+    {
+      topicId: 'newton1',
+      q: '¿Qué describe la primera ley de Newton?',
+      options: [
+        'La relación entre fuerza, masa y aceleración.',
+        'El comportamiento de un cuerpo si no actúan fuerzas netas sobre él.',
+        'La fuerza con la que la Tierra atrae a los cuerpos.',
+        'La aparición de la fuerza de rozamiento.'
+      ],
+      correct: 1,
+      explain:
+        'La 1ª ley explica que, sin fuerza neta, un cuerpo mantiene su estado de reposo o movimiento rectilíneo uniforme (inercia).'
+    },
+    {
+      topicId: 'newton2',
+      q: 'Según la 2ª ley de Newton, si duplicamos la fuerza neta y mantenemos la masa…',
+      options: [
+        'la aceleración también se duplica.',
+        'la aceleración se reduce a la mitad.',
+        'la aceleración no cambia.',
+        'la masa se duplica.'
+      ],
+      correct: 0,
+      explain:
+        'F = m · a ⇒ a = F / m. Si F se duplica y m es constante, la aceleración también se duplica.'
+    },
+    {
+      topicId: 'newton3',
+      q: 'Un patinador empuja a otro. Según la 3ª ley de Newton…',
+      options: [
+        'solo el más fuerte ejerce fuerza.',
+        'ambos ejercen fuerzas iguales y opuestas.',
+        'solo el que se mueve más rápido recibe fuerza.',
+        'las fuerzas dependen de la masa pero no del contacto.'
+      ],
+      correct: 1,
+      explain:
+        'Acción y reacción: el patinador A ejerce una fuerza sobre B, y B ejerce una fuerza igual y opuesta sobre A.'
+    },
+    {
+      topicId: 'peso',
+      q: '¿Cómo se calcula el peso de un cuerpo en la Tierra?',
+      options: [
+        'P = m · v',
+        'P = m / g',
+        'P = m · g',
+        'P = g / m'
+      ],
+      correct: 2,
+      explain: 'El peso es una fuerza: P = m · g.'
+    },
+    {
+      topicId: 'friccion',
+      q: 'La fuerza de rozamiento…',
+      options: [
+        'siempre ayuda al movimiento.',
+        'siempre es despreciable.',
+        'se opone al movimiento relativo entre superficies.',
+        'no depende del tipo de superficie.'
+      ],
+      correct: 2,
+      explain:
+        'La fricción se opone al movimiento relativo entre superficies en contacto.'
+    },
+    {
+      topicId: 'coef',
+      q: 'El coeficiente de rozamiento μ…',
+      options: [
+        'depende del área de contacto.',
+        'depende de los materiales en contacto.',
+        'es siempre 1.',
+        'solo existe en líquidos.'
+      ],
+      correct: 1,
+      explain:
+        'μ depende de la naturaleza de las superficies (madera, hielo, caucho…), no del área de contacto.'
+    },
+    {
+      topicId: 'aceleracion',
+      q: 'En caída libre cerca de la superficie terrestre, la aceleración de un cuerpo…',
+      options: [
+        'es aproximádamente constante e igual a g.',
+        'es cero.',
+        'depende solamente de la masa.',
+        'no tiene relación con la gravedad.'
+      ],
+      correct: 0,
+      explain:
+        'En caída libre sin rozamiento apreciable, la aceleración se considera constante: g ≈ 9,8 m/s².'
+    }
+  ];
+
+  // ===== СЛОВАРЬ =====
+  const vocabList = [
+    { es: 'fuerza', ru: 'сила' },
+    { es: 'masa', ru: 'масса' },
+    { es: 'aceleración', ru: 'ускорение' },
+    { es: 'peso', ru: 'вес' },
+    { es: 'gravedad', ru: 'гравитация' },
+    { es: 'rozamiento', ru: 'трение' },
+    { es: 'fuerza neta', ru: 'равнодействующая сила' },
+    { es: 'acción y reacción', ru: 'действие и противодействие' },
+    { es: 'coeficiente de rozamiento', ru: 'коэффициент трения' }
+  ];
+
+  // ===== РЕНДЕР КАРТОЧЕК ТЕОРИИ =====
+  const cardsContainer = document.getElementById('cardsContainer');
+  const searchInput = document.getElementById('searchInput');
+  let showTranslation = true;
+
+  function renderCards(filterText = '') {
+    cardsContainer.innerHTML = '';
+    const text = filterText.trim().toLowerCase();
+
+    topics.forEach(topic => {
+      const combined =
+        (topic.title + ' ' + topic.text_ca + ' ' + topic.text_ru + ' ' + topic.keywords.join(' '))
+          .toLowerCase();
+      if (text && !combined.includes(text)) return;
+
+      const card = document.createElement('section');
+      card.className = 'theory-card';
+      card.dataset.topicId = topic.id;
+
+      card.innerHTML = `
+        <header class="theory-header">
+          <div class="theory-title">
+            <span class="icon-dot"></span>
+            <span>${topic.title}</span>
+          </div>
+          <div class="theory-ref">${topic.ref}</div>
+        </header>
+        <div class="theory-text">${topic.text_ca}</div>
+        <div class="translation" style="${showTranslation ? '' : 'display:none;'}">${topic.text_ru}</div>
+        <div class="chip-row">
+          ${topic.keywords
+            .map(k => `<button class="chip" data-chip="${k.toLowerCase()}">${k}</button>`)
+            .join('')}
+        </div>
+      `;
+
+      cardsContainer.appendChild(card);
+    });
+  }
+
+  // Поиск
+  searchInput.addEventListener('input', e => {
+    renderCards(e.target.value);
+  });
+
+  // Клики по "чипам" — фильтр по слову
+  cardsContainer.addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    const word = chip.dataset.chip || '';
+    searchInput.value = word;
+    renderCards(word);
+  });
+
+  // Переключатель перевода
+  const toggleTranslate = document.getElementById('toggleTranslate');
+  toggleTranslate.addEventListener('click', () => {
+    showTranslation = !showTranslation;
+    toggleTranslate.classList.toggle('on', showTranslation);
+    toggleTranslate.querySelector('span').textContent =
+      showTranslation ? 'Показать перевод (RU)' : 'Скрыть перевод';
+    document.querySelectorAll('.translation').forEach(el => {
+      el.style.display = showTranslation ? 'block' : 'none';
+    });
+  });
+
+  // ===== ТЕСТЫ И ПРОГРЕСС =====
+  let currentTestIndex = 0;
+  const testQuestion = document.getElementById('testQuestion');
+  const testOptions = document.getElementById('testOptions');
+  const testFeedback = document.getElementById('testFeedback');
+  const progressBar = document.getElementById('progressBar');
+  const progressCircle = document.getElementById('progressCircle');
+
+  const PROGRESS_KEY = 'fisica_tema7_progress';
+  let progressState = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
+  if (!Array.isArray(progressState.done)) progressState.done = [];
+
+  function saveProgress() {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressState));
+  }
+
+  function updateProgressUI() {
+    const total = tests.length;
+    const done = progressState.done.length;
+    const percent = Math.round((done / total) * 100);
+
+    progressBar.style.width = percent + '%';
+    progressCircle.textContent = `${done} / ${total} · ${percent}%`;
+  }
+
+  function loadTest() {
+    const t = tests[currentTestIndex];
+    const topic = topics.find(tp => tp.id === t.topicId);
+    testQuestion.textContent = (topic ? topic.ref + ' · ' : '') + t.q;
+    testOptions.innerHTML = '';
+    testFeedback.textContent = '';
+
+    t.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'test-option';
+      btn.textContent = opt;
+      btn.addEventListener('click', () => {
+        const already = progressState.done.includes(currentTestIndex);
+        if (idx === t.correct) {
+          btn.classList.add('correct');
+          testFeedback.textContent = '✅ Верно: ' + t.explain;
+          testFeedback.className = 'test-feedback ok';
+          if (!already) {
+            progressState.done.push(currentTestIndex);
+            saveProgress();
+            updateProgressUI();
+          }
+        } else {
+          btn.classList.add('wrong');
+          testFeedback.textContent = '❌ Не совсем: ' + t.explain;
+          testFeedback.className = 'test-feedback bad';
+        }
+
+        // Блокируем остальные ответы
+        Array.from(testOptions.children).forEach(b => (b.disabled = true));
+
+        // Следующий тест
+        setTimeout(() => {
+          currentTestIndex = (currentTestIndex + 1) % tests.length;
+          loadTest();
+        }, 1300);
+      });
+      testOptions.appendChild(btn);
+    });
+  }
+
+  updateProgressUI();
+  loadTest();
+
+  // ===== МИНИ-ТРЕНАЖЁР СЛОВ =====
+  const vocabWordEl = document.getElementById('vocabWord');
+  const vocabAnswerEl = document.getElementById('vocabAnswer');
+  const vocabFeedbackEl = document.getElementById('vocabFeedback');
+  const vocabMetaEl = document.getElementById('vocabMeta');
+  const btnCheckVocab = document.getElementById('checkVocab');
+  const btnShowVocab = document.getElementById('showVocab');
+  const btnNextVocab = document.getElementById('nextVocab');
+
+  let currentVocabIndex = 0;
+  let vocabStats = { seen: 0, correct: 0 };
+
+  function pickRandomVocab() {
+    currentVocabIndex = Math.floor(Math.random() * vocabList.length);
+    const w = vocabList[currentVocabIndex];
+    vocabWordEl.textContent = w.es;
+    vocabAnswerEl.value = '';
+    vocabFeedbackEl.textContent = '';
+    vocabMetaEl.textContent = `Выучено примерно: ${vocabStats.correct} верных из ${vocabStats.seen} попыток.`;
+    vocabAnswerEl.focus();
+  }
+
+  btnCheckVocab.addEventListener('click', () => {
+    const w = vocabList[currentVocabIndex];
+    const answer = vocabAnswerEl.value.trim().toLowerCase();
+    vocabStats.seen++;
+    if (!answer) {
+      vocabFeedbackEl.textContent = 'Введите перевод или нажмите «Показать ответ».';
+      vocabFeedbackEl.style.color = '#ffd36a';
+      return;
+    }
+    if (answer === w.ru.toLowerCase()) {
+      vocabStats.correct++;
+      vocabFeedbackEl.textContent = '✅ Отлично! Правильный перевод.';
+      vocabFeedbackEl.style.color = '#38e38b';
+    } else {
+      vocabFeedbackEl.textContent = `❌ Не совсем. Правильно: «${w.ru}».`;
+      vocabFeedbackEl.style.color = '#ff5c7a';
+    }
+    vocabMetaEl.textContent = `Выучено примерно: ${vocabStats.correct} верных из ${vocabStats.seen} попыток.`;
+  });
+
+  btnShowVocab.addEventListener('click', () => {
+    const w = vocabList[currentVocabIndex];
+    vocabFeedbackEl.textContent = `📖 Ответ: «${w.ru}».`;
+    vocabFeedbackEl.style.color = '#57d6ff';
+  });
+
+  btnNextVocab.addEventListener('click', () => {
+    pickRandomVocab();
+  });
+
+  pickRandomVocab();
+
+  // ===== УЧЁТ ВРЕМЕНИ ЗАНЯТИЯ (локально) =====
+  const sessionTodayEl = document.getElementById('sessionToday');
+  const totalMinutesEl = document.getElementById('totalMinutes');
+  const SESSION_KEY = 'fisica_tema7_session';
+
+  let sessionState = JSON.parse(localStorage.getItem(SESSION_KEY) || '{}');
+  if (typeof sessionState.totalSeconds !== 'number') sessionState.totalSeconds = 0;
+  if (typeof sessionState.todaySeconds !== 'number') sessionState.todaySeconds = 0;
+  if (!sessionState.todayDate) sessionState.todayDate = new Date().toISOString().slice(0, 10);
+
+  function resetIfNewDay() {
+    const today = new Date().toISOString().slice(0, 10);
+    if (sessionState.todayDate !== today) {
+      sessionState.todayDate = today;
+      sessionState.todaySeconds = 0;
+    }
+  }
+
+  function formatMinutes(sec) {
+    const m = Math.round(sec / 60);
+    return m + ' мин';
+  }
+
+  function updateTimeUI() {
+    sessionTodayEl.textContent = formatMinutes(sessionState.todaySeconds);
+    totalMinutesEl.textContent = formatMinutes(sessionState.totalSeconds);
+  }
+
+  resetIfNewDay();
+  updateTimeUI();
+
+  setInterval(() => {
+    resetIfNewDay();
+    sessionState.totalSeconds += 10;
+    sessionState.todaySeconds += 10;
+    localStorage.setItem(SESSION_KEY, JSON.stringify(sessionState));
+    updateTimeUI();
+  }, 10000);
+
+  // ===== ПЕРЕКЛЮЧЕНИЕ РЕЖИМА (ТЕОРИЯ / ТЕСТЫ / СЛОВА) =====
+  const modeTabs = document.querySelectorAll('.mode-tab');
+  const testsPanel = document.getElementById('testsPanel');
+  const vocabPanel = document.getElementById('vocabPanel');
+  const contentArea = document.querySelector('.content-area');
+
+  function setMode(mode) {
+    modeTabs.forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
+    // По факту мы просто скроллим и визуально подсвечиваем нужный блок,
+    // но всё остаётся на одной странице — проще для ребёнка.
+    if (mode === 'theory') {
+      contentArea.style.boxShadow = '0 0 0 1px rgba(87,214,255,0.35)';
+      testsPanel.style.boxShadow = 'none';
+      vocabPanel.style.boxShadow = 'none';
+    } else if (mode === 'tests') {
+      contentArea.style.boxShadow = 'none';
+      testsPanel.style.boxShadow = '0 0 0 1px rgba(87,214,255,0.35)';
+      vocabPanel.style.boxShadow = 'none';
+      testsPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (mode === 'vocab') {
+      contentArea.style.boxShadow = 'none';
+      testsPanel.style.boxShadow = 'none';
+      vocabPanel.style.boxShadow = '0 0 0 1px rgba(87,214,255,0.35)';
+      vocabPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  modeTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      setMode(tab.dataset.mode);
+    });
+  });
+
+  // Стартовая отрисовка
+  renderCards('');
+  setMode('theory');
+</script>
+</body>
+</html>
